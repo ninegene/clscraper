@@ -46,9 +46,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-
 # Sphinx documentation
 docs/_build/
 
@@ -68,7 +65,7 @@ tmp/
 temp/
 
 # App data
-clscraper.conf
 cache/
 logs/
+*.logs
 

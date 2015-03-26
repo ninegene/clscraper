@@ -1,4 +1,5 @@
 from ConfigParser import SafeConfigParser, NoOptionError, NoSectionError
+import dataset
 import os
 import logging
 import logging.handlers
@@ -53,6 +54,7 @@ def _set_defaults(parser, conf_file):
 
     _set_default(parser, APP_NAME, 'cache_dir', os.path.join(base_dir, APP_NAME, 'cache'))
     _set_default(parser, APP_NAME, 'log_dir', os.path.join(base_dir, APP_NAME, 'logs'))
+    _set_default(parser, APP_NAME, 'sqlite_db_file', os.path.join(base_dir, APP_NAME, APP_NAME + '.db'))
 
 
 def _set_default(parser, section, key, default_value):
@@ -77,5 +79,7 @@ CL_SITES_URL = config.get("craigslist", 'sites_url')
 
 CACHE_DIR = config.get(APP_NAME, 'cache_dir')
 LOG_DIR = config.get(APP_NAME, 'log_dir')
+SQLITE_DB_FILE = config.get(APP_NAME, 'sqlite_db_file')
 
 initialize_logger(LOG_DIR, APP_NAME)
+db = dataset.connect('sqlite:///' + SQLITE_DB_FILE)
