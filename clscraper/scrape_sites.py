@@ -1,28 +1,14 @@
-import requests
 import logging
-from config import CACHE_DIR, SITES_URL
-from utils import load_html, saveas_html
+from conf import CACHE_DIR, CL_SITES_URL
+from utils import get_content
 from bs4 import BeautifulSoup
 import re
 
 log = logging.getLogger(__name__)
 
 
-def get_content(url, cache_dir):
-    content = load_html(url, cache_dir)
-    if content is None:
-        response = requests.get(url)
-        if response.status_code != 200:
-            log.warn('not 200 response code for ', url, response.status_code)
-            # raise Exception(response.status_code)
-            return response.content
-        content = response.content
-        saveas_html(url, content, cache_dir)
-    return content
-
-
 def scrape_sites():
-    content = get_content(SITES_URL, CACHE_DIR)
+    content = get_content(CL_SITES_URL, CACHE_DIR)
     soup = BeautifulSoup(content)
 
     tags = soup.find('div', class_='jump_to_continents').find_all('a')
@@ -32,7 +18,7 @@ def scrape_sites():
         anchor = re.sub(r'^#', '', tag.get('href'))
         _process_continent(soup, name, anchor)
 
-    log.info('done scrape_sites()')
+    log.info('done scrape_sites')
 
 
 def _process_continent(soup, continent, anchor):
@@ -55,7 +41,7 @@ def _process_continent(soup, continent, anchor):
                 'site': site,
                 'site_link': site_link
             }
-            log.info(data)
+            log.debug(data)
             sites.append(data)
 
 

@@ -1,8 +1,8 @@
-import scraper
+from scrape_sites import scrape_sites
 
 
 def main():
-    scraper.scrape_sites()
+    scrape_sites()
 
 if __name__ == "__main__":
     main()

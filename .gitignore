@@ -68,7 +68,7 @@ tmp/
 temp/
 
 # App data
-clscraper/clscraper.conf
-clscraper/clscraper/cache/
-clscraper/clscraper/log/
+clscraper.conf
+cache/
+logs/
 

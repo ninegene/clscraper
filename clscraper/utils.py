@@ -2,6 +2,8 @@ from datetime import datetime
 from hashlib import sha1
 import os
 import logging
+import requests
+
 
 log = logging.getLogger(__name__)
 
@@ -62,3 +64,16 @@ def load_html(url, basedir, created_at=None):
 
 def append_url_to_content(url, content):
     return content + '\n<!--source_url: {0}-->'.format(url)
+
+
+def get_content(url, cache_dir):
+    content = load_html(url, cache_dir)
+    if content is None:
+        response = requests.get(url)
+        if response.status_code != 200:
+            log.warn('not 200 response code for ', url, response.status_code)
+            # raise Exception(response.status_code)
+            return response.content
+        content = response.content
+        saveas_html(url, content, cache_dir)
+    return content
